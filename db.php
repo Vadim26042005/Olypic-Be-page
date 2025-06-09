@@ -1,8 +1,8 @@
 <?php
-$db_name = 'sql302.infinityfree.com';
-$username = 'if0_39163872';
-$password = 'VRlmmlVR';
-$host = 'if0_39163872_olympic_sahour';
+$db_name = 'mydatabase';
+$username = 'root';
+$password = '';
+$host = 'localhost';
 $conn = mysqli_connect($host, $username, $password, $db_name);
 
 if (!$conn){
