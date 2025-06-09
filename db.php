@@ -1,5 +1,5 @@
 <?php
-$db_name = 'mydatabase';
+$db_name = 'olypic-sahour';
 $username = 'root';
 $password = '';
 $host = 'localhost';

@@ -16,7 +16,7 @@ require_once('../db.php');
 
         body {
             background-color: #F5F5F5;
-            padding: 40px;
+            /* padding: 40px; */
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -102,10 +102,29 @@ require_once('../db.php');
         <input type="text" name="email" placeholder="Entrez votre email" required>
 
         <label for="password">Mot de passe</label>
-        <input type="password" name="password" placeholder="Entrez votre mot de passe" required>
+        <input 
+            id="password" 
+            type="password" 
+            name="password" 
+            placeholder="Entrez votre mot de passe" 
+            pattern="(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}"
+            title="Le mot de passe doit contenir au moins 12 caractères, avec au moins une lettre et un chiffre."
+            required
+        >
+        <div id='search-bar' style="height: 10px; width: 100%; background: #ccc; border-radius: 4px; margin-top: 5px; margin-bottom: 15px;">
+            <div id='strength-fill' style="height: 100%; width: 0%; background: red; border-radius: 4px;"></div>
+        </div>
 
-        <label for="password_verify">Confirmez le mot de passe</label>
-        <input type="password" name="password_verify" placeholder="Confirmez votre mot de passe" required>
+        <div id='strength-text'></div>
+
+
+        <label for="password_verify" style="font-weight: bold; margin-top: 5px;">Confirmez le mot de passe</label>
+        <input 
+            type="password" 
+            name="password_verify" 
+            placeholder="Confirmez votre mot de passe" 
+            pattern="(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}"
+            required>
 
         <?php if(isset($_GET['error'])): ?>
             <div class="error">
@@ -119,6 +138,41 @@ require_once('../db.php');
     <p>Vous avez déjà un compte ?</p>
     <a href="connection.php">Page de connexion</a><br>
     <a href="../index.php">Page d'accueil</a>
+
+    <script>
+        const passwordInput = document.getElementById('password');
+        const strengthBar = document.getElementById('strength-fill');
+        const strengthText = document.getElementById('strength-text');
+
+        passwordInput.addEventListener('input', () => {
+            const password = passwordInput.value;
+            const numCount = (password.match(/\d/g) || []).length;
+            const length = password.length;
+
+            let strength = 0;
+            if (length >= 6) strength += 1;
+            if (length >= 12) strength += 1;
+            if (numCount >= 1) strength += 1;
+            if (numCount >= 5) strength += 1;
+
+            if (strength <= 1) {
+                strengthBar.style.width = '25%';
+                strengthBar.style.background = 'red';
+                strengthText.textContent = 'Faible';
+                strengthText.style.color = 'red';
+            } else if (strength === 2 || strength === 3) {
+                strengthBar.style.width = '60%';
+                strengthBar.style.background = 'orange';
+                strengthText.textContent = 'Moyen';
+                strengthText.style.color = 'orange';
+            } else if (strength >= 4) {
+                strengthBar.style.width = '100%';
+                strengthBar.style.background = 'green';
+                strengthText.textContent = 'Fort';
+                strengthText.style.color = 'green';
+            }
+        });
+    </script>
 
 </body>
 </html>

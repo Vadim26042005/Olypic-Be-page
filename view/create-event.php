@@ -3,14 +3,25 @@ require_once('../db.php');
 require_once('../be-account/connect-verifier.php');
 
 $events = [];
+$users = [];
+
 $result = mysqli_query($conn, "SELECT * FROM events");
+$resultUser = mysqli_query($conn, "SELECT * FROM users");
+
 if($result){
     while($row = mysqli_fetch_assoc($result)){
         $events[] = $row;
     }
 }
-?>
 
+if($resultUser){
+    while($row = mysqli_fetch_assoc($resultUser)){
+        $users[] = $row;
+    }
+}
+?>
+<!-- //mettre le compteur des evenement -->
+ <!-- modifier pour que l'utilisateur ne vois pas les boutton suprimer des evenement ainsi que le boutton modifier les evenement -->
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -25,12 +36,11 @@ if($result){
         }
 
         body {
-            background-color: #f5f5f5;
-            color: #222;
-            padding: 40px;
             display: flex;
             flex-direction: column;
             align-items: center;
+            justify-content: space-between;
+            min-height: 100vh;
         }
 
         h1 {
@@ -136,6 +146,7 @@ if($result){
     <h1>Événements existants</h1>
 
     <?php foreach($events as $event): ?>
+        
         <div class="event-block">
             <form action="../be-events/update-data.php" method="post">
                 <label for="event_name">Nom de l'événement</label>
@@ -145,13 +156,18 @@ if($result){
                 <input type="text" name="event_description" value="<?php echo htmlspecialchars($event['event_description']); ?>">
 
                 <input type="hidden" name="id" value="<?php echo $event['id']; ?>">
-                <button type="submit">Appliquer les modifications</button>
+                <?php if (isset($_SESSION['user_id']) &&  $_SESSION['user_id'] == $event['user_id']): ?>
+                    <button type="submit">Appliquer les modifications</button>
+                <?php endif; ?>
             </form>
-
-            <form action="../be-events/delete-event.php" method="post">
-                <input type="hidden" name="id" value="<?php echo $event['id']; ?>">
-                <button type="submit" style="background-color: #F75A5A; color: white;">Supprimer</button>
-            </form>
+            
+             <?php if (isset($_SESSION['user_id']) &&  $_SESSION['user_id'] == $event['user_id']): ?>
+                <form action="../be-events/delete-event.php" method="post">
+                    <input type="hidden" name="id" value="<?php echo $event['id']; ?>">
+                    <button type="submit" style="background-color: #F75A5A; color: white;">Supprimer</button>
+                </form>
+            <?php endif; ?>
+            
         </div>
     <?php endforeach; ?>
 

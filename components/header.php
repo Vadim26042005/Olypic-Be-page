@@ -66,4 +66,4 @@ $basePath = str_repeat('../', $repeatCount);
                 <a href="<?= $basePath ?>view/registration.php">Inscription</a>
             <?php endif; ?>
     </nav>
-</header>
+</header>        
