@@ -15,48 +15,52 @@ $basePath = str_repeat('../', $repeatCount);
     <title>Mon Site</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
     <style>
-        * {
-            font-family: 'Montserrat', sans-serif;
-            box-sizing: border-box;
-        }
-
-        body {
-            margin: 0;
-            background-color: #F5F5F5;
-            color: #222;
-        }
-
-        header {
-            background-color: #6DE1D2;
-            padding: 20px;
-            text-align: center;
-        }
-
-        header h1 {
-            margin: 0;
-            color: #000;
-        }
-
-        nav {
-            margin-top: 10px;
-        }
-
-        nav a {
-            text-decoration: none;
-            margin: 0 15px;
-            color: #000;
-            font-weight: 600;
-        }
-
-        nav a:hover {
-            color: #F75A5A;
-        }
+     * {
+         font-family: 'Montserrat', sans-serif;
+         box-sizing: border-box;
+     }
+ 
+     body {
+         margin: 0;
+         background-color: #F5F5F5;
+         color: #222;
+     }
+ 
+     header {
+         background-color: #6DE1D2;
+         padding: 20px;
+         text-align: center;
+         padding-left: 50%; 
+         padding-right: 50%; 
+     }
+ 
+     header h1 {
+         margin: 0;
+         color: #000;
+     }
+ 
+     nav {
+         margin-top: 10px;
+         display: flex;
+     }
+ 
+     nav a {
+         text-decoration: none;
+         margin: 0 15px;
+         color: #000;
+         font-weight: 600;
+     }
+ 
+     nav a:hover {
+         color: #F75A5A;
+     }
     </style>
 </head>
 <body>
 <header>
     <h1>Bienvenue sur le site Olympique</h1>
     <nav>
+        <img src="database-file-icon.png" alt="">
         <a href="<?= $basePath ?>./index.php">Accueil</a>
             <?php if (isset($_SESSION['user_id'])): ?>
                 <a href="<?= $basePath ?>view/user-profile.php">Profil</a>

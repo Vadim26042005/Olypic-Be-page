@@ -37,6 +37,15 @@ require_once('../db.php');
             max-width: 500px;
         }
 
+        input {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border: 2px solid #6DE1D2;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+
         form input[type="text"],
         form input[type="password"] {
             width: 100%;
@@ -99,7 +108,7 @@ require_once('../db.php');
         <input type="text" name="last_name" placeholder="Entrez votre nom" required>
 
         <label for="email">Email</label>
-        <input type="text" name="email" placeholder="Entrez votre email" required>
+        <input type="email" name="email" placeholder="Entrez votre email" required>
 
         <label for="password">Mot de passe</label>
         <input 

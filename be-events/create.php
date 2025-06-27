@@ -6,8 +6,9 @@ $user_id = $_SESSION['user_id'];
 if ($_SERVER['REQUEST_METHOD']=== 'POST'){
     $event_name = mysqli_real_escape_string($conn, trim($_POST['event_name']));
     $event_description = mysqli_real_escape_string($conn, trim($_POST['event_description']));
+    $nb_participant = mysqli_real_escape_string($conn, trim($_POST["nb_participant"]));
 
-    $query = "INSERT INTO `events` (`event_name`, `event_description`, `user_id`) VALUES ('$event_name', '$event_description', '$user_id' ) ";
+    $query = "INSERT INTO `events` (`event_name`, `event_description`, `user_id`, `nb_participant`) VALUES ('$event_name', '$event_description', '$user_id', '$nb_participant' ) ";
     $result = mysqli_query($conn, $query);
 
     if($result){

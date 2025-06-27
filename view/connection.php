@@ -82,7 +82,7 @@ require_once('../db.php');
     <h1>Page de Connexion</h1>
 
     <form action="../be-account/connection-be.php" method="post">
-        <input type="text" name="email" id="email" placeholder="Entrez votre adresse e-mail" required>
+        <input type="email" name="email" id="email" placeholder="Entrez votre adresse e-mail" required>
         <input type="password" name='password' id="password" placeholder="Entrez votre mot de passe" required>
         <button type="submit">Se connecter</button>
     </form>

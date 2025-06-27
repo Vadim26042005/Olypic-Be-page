@@ -1,5 +1,16 @@
 <?php
 session_start();
+require_once('db.php');
+$events = [];
+
+$result = mysqli_query($conn, "SELECT * FROM events");
+
+
+if($result){
+    while($row = mysqli_fetch_assoc($result)){
+        $events[] = $row;
+    }
+}
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -31,9 +42,76 @@ session_start();
             color: #F75A5A;
         }
 
-        p {
+        form {
+            background-color: #fff;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 30px;
+            width: 100%;
+            max-width: 600px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+        
+        form input[type="text"]{
+            width: 100%;
+            padding: 12px;
             margin: 10px 0;
-            font-size: 1.1em;
+            border: 2px solid #6DE1D2;
+            border-radius: 8px;
+        }
+        textarea {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border: 2px solid #6DE1D2;
+            border-radius: 8px;
+        }
+        p{
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border: 2px solid #6DE1D2;
+            border-radius: 8px;
+        }
+        button {
+            background-color: #FFD63A;
+            color: #000;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            margin-top: 10px;
+            margin-right: 10px;
+        }
+
+        button:hover {
+            background-color: #FFA955;
+        }
+
+        .event-block {
+            background-color: #fff;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+        }
+
+        .event-block form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .event-block form input[type="text"]{
+            margin-bottom: 10px;
+        }
+        textarea{
+            margin-bottom: 10px;
+        }
+
+        .event-block form:last-child {
+            margin-top: 10px;
         }
 
         a {
@@ -66,20 +144,13 @@ session_start();
 
     <h1>Bienvenue sur la page d'accueil du site</h1>
 
-    <?php if (!isset($_SESSION['user_id'])): ?>
-        <p>Veuillez vous connecter ici :</p>
-        <a href="view/connection.php">Page de connexion</a>
+    <h3>Événements deja existants: <?php echo count($events);?> </h3>
+    <div class="links">
+        <a href="view/create-event.php">Créer un évènement</a>
+    </div>
 
-        <p>Ou créez un compte ici :</p>
-        <a href="view/registration.php">Page d'inscription</a>
-
-    <?php else: ?>
-        <p>Accédez à votre profil :</p>
-        <a href="view/user-profile.php">Profil</a><br><br>
-
-        <strong><a href="../be-account/disconnect.php">Déconnexion</a></strong>
-    <?php endif; ?>
+    <?php include('components/self-event.php')?>
 
 </body>
-<?php include('./components/footer.php')?>
+<?php include('components/footer.php')?>
 </html>

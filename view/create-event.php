@@ -3,10 +3,9 @@ require_once('../db.php');
 require_once('../be-account/connect-verifier.php');
 
 $events = [];
-$users = [];
 
 $result = mysqli_query($conn, "SELECT * FROM events");
-$resultUser = mysqli_query($conn, "SELECT * FROM users");
+
 
 if($result){
     while($row = mysqli_fetch_assoc($result)){
@@ -14,11 +13,7 @@ if($result){
     }
 }
 
-if($resultUser){
-    while($row = mysqli_fetch_assoc($resultUser)){
-        $users[] = $row;
-    }
-}
+
 ?>
 <!-- //mettre le compteur des evenement -->
  <!-- modifier pour que l'utilisateur ne vois pas les boutton suprimer des evenement ainsi que le boutton modifier les evenement -->
@@ -58,7 +53,21 @@ if($resultUser){
             box-shadow: 0 4px 10px rgba(0,0,0,0.1);
         }
 
-        form input[type="text"] {
+        form input[type="text"]{
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border: 2px solid #6DE1D2;
+            border-radius: 8px;
+        }
+        textarea {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border: 2px solid #6DE1D2;
+            border-radius: 8px;
+        }
+        p{
             width: 100%;
             padding: 12px;
             margin: 10px 0;
@@ -113,12 +122,19 @@ if($resultUser){
             flex-direction: column;
         }
 
-        .event-block form input[type="text"] {
+        .event-block form input[type="text"]{
+            margin-bottom: 10px;
+        }
+        textarea{
             margin-bottom: 10px;
         }
 
         .event-block form:last-child {
             margin-top: 10px;
+        }
+        .description{
+            display :flex;
+            flex-direction: column;
         }
     </style>
 </head>
@@ -134,6 +150,9 @@ if($resultUser){
         <label for="event_description">Description</label>
         <input type="text" name="event_description" placeholder="Entrez la description de l'événement" required>
 
+        <label for="nb_participant">Nombre de joueurs</label>
+        <input type="text" name ="nb_participant" placeholder="entrer le nombre de joueurs" required>
+
         <?php if(isset($_GET['error'])): ?>
             <div class="error">
                 <?php echo htmlspecialchars($_GET['error']); ?>
@@ -143,32 +162,28 @@ if($resultUser){
         <button type="submit" name="submit_button">Créer l'événement</button>
     </form>
 
-    <h1>Événements existants</h1>
+    <h1>Événements existants: <?php echo count($events);?> </h1>
+
+
+    <?php include('../components/self-event.php')?> 
 
     <?php foreach($events as $event): ?>
         
-        <div class="event-block">
-            <form action="../be-events/update-data.php" method="post">
+        <?php if (isset($_SESSION['user_id']) &&  $_SESSION['user_id'] != $event['user_id']): ?>
+            <div class="event-block">
                 <label for="event_name">Nom de l'événement</label>
-                <input type="text" name="event_name" value="<?php echo htmlspecialchars($event['event_name']); ?>">
+                <p><?php echo htmlspecialchars($event['event_name']); ?></p>
+                
+                <div class="description">
+                    <label for="event_description">Description</label>
+                    <textarea name="event_description" maxlength="500" rows="5" cols="10"><?php echo htmlspecialchars($event['event_description']); ?></textarea>
+                </div>
+                <label for="nb_participant">Nombre de joueurs</label>
+                <p><?php echo htmlspecialchars($event['nb_participant']); ?></p>
+            </div>
+        <?php else: ?>
+        <?php endif; ?>
 
-                <label for="event_description">Description</label>
-                <input type="text" name="event_description" value="<?php echo htmlspecialchars($event['event_description']); ?>">
-
-                <input type="hidden" name="id" value="<?php echo $event['id']; ?>">
-                <?php if (isset($_SESSION['user_id']) &&  $_SESSION['user_id'] == $event['user_id']): ?>
-                    <button type="submit">Appliquer les modifications</button>
-                <?php endif; ?>
-            </form>
-            
-             <?php if (isset($_SESSION['user_id']) &&  $_SESSION['user_id'] == $event['user_id']): ?>
-                <form action="../be-events/delete-event.php" method="post">
-                    <input type="hidden" name="id" value="<?php echo $event['id']; ?>">
-                    <button type="submit" style="background-color: #F75A5A; color: white;">Supprimer</button>
-                </form>
-            <?php endif; ?>
-            
-        </div>
     <?php endforeach; ?>
 
 </body>

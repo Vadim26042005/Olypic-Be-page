@@ -43,7 +43,7 @@ $user = mysqli_fetch_assoc($result);
             width: 100%;
         }
 
-        input[type="text"] {
+        input[type="text"],[type="email"] {
             width: 100%;
             padding: 12px;
             margin: 10px 0;
@@ -104,7 +104,7 @@ $user = mysqli_fetch_assoc($result);
         <input type="text" name="last_name" value="<?php echo htmlspecialchars($user['last_name']); ?>">
 
         <label for="email">Email :</label>
-        <input type="text" name="email" value="<?php echo htmlspecialchars($user['email']); ?>">
+        <p type="email" name="email"><?php echo htmlspecialchars($user['email']); ?><p>
 
         <button type="submit">Enregistrer les modifications</button>
     </form>
